@@ -1,0 +1,4 @@
+{
+	'up_messages': ['hi', 'there'],
+	'down_messages': ['what', 'is', 'up']
+}
