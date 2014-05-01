@@ -11,26 +11,23 @@ router.get('/', function(req, res){
 });
 
 
-/* server end point for signing into twitter*/
 router.get('/chats', function(req, res) {
-	console.log("hitting chat");
+	console.log("downloading chats from server");
 	res.json(messages);
 	//res.JSON(messages);
-
 });
 
+
+
 router.get('/addchat', function(req, res) {
-	console.log(req.query['direction_flag']);
-	if(req.query['direction_flag'] === "true"){
-		messages['up_messages'].push({'text': req.query['text']});
-
-	}
-	else{
-		messages['down_messages'].unshift({'text': req.query['text']});
-	}
-	res.json(messages);
-
-
+	// console.log(req.query['direction_flag']);
+	// if(req.query['direction_flag'] === "true"){
+	// 	messages['up_messages'].push({'text': req.query['text']});
+	// }
+	// else{
+	// 	messages['down_messages'].unshift({'text': req.query['text']});
+	// }
+	// res.json(messages);
 });
 
 

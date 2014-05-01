@@ -1,10 +1,13 @@
 html.
 	<div id="anchor"></div>
+	<script src="http://localhost:8045/socket.io/socket.io.js"></script>
 	<script src="http://fb.me/react-0.10.0.js"></script>
 	<script src="http://fb.me/JSXTransformer-0.10.0.js"></script>
 	<script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
 	<script type="text/jsx">
 		/** @jsx React.DOM */
+		var socket;
+				
 		var ChatModule = React.createClass({
 			getInitialState: function(){
 				return {up_messages: [], down_messages:[], current_message: '', direction_flag: true};
@@ -26,14 +29,20 @@ html.
 				});
 			},
 			componentWillMount: function(){
+				socket = io.connect('http://localhost:8045');
+				socket.on('news', function(data){
+					console.log(data);
+					socket.emit('my other event', { my: 'data' });
+					console.log("handshake sent with SOCKET");
+				});
 				this.loadCommentsFromServer();
-				setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+				/// set interval would go here
 			},
 			onTyping: function(e){
 				this.setState({current_message: e.target.value});
 			},
 			handleSubmit: function(e){
-
+				var that = this;
 				var new_message = e.target.value;
 				if(this.state.direction_flag){
 				this.state.up_messages.push({text: this.state.current_message});
@@ -41,25 +50,19 @@ html.
 			else{
 				this.state.down_messages.unshift({text: this.state.current_message});
 			}	
+
 				this.setState({direction_flag: !this.state.direction_flag});
 				var formData = {
 						'text': this.state.current_message,
 						'direction_flag': !this.state.direction_flag
 					};
-				this.setState({current_message: ''});
-				$.ajax({
-						url: '/addchat',
-						dataType: 'json',
-						type: 'GET',
-						data: formData,
-						success: function(data){
-							console.log('up message', data['up_messages']);
-							console.log('up message', data['down_messages']);
-
-							this.setState({up_messages: data['up_messages'], down_messages: data['down_messages']});
-						}.bind(this)
-				});	
 				e.preventDefault();
+				console.log('socket is', socket)
+				socket.emit('name', "hi");
+
+				//text: that.state.current_message, direction_flag: !that.state.direction_flag});
+				
+				that.setState({current_message: ''});
 			},
 			render: function(){
 				var inputStyle = {
