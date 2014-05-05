@@ -1,0 +1,46 @@
+
+
+10.0.3.143:5040
+david nolen ---> dom diffs --> what was that??. seemed cool.
+I started working with React like....
+	5 days ago.
+	
+	But it's the sort of thing I had my eye on for a while and it was cool to actually try it.
+	
+	I had tried D3 and I loved the idea of binding an array or dictionary and being able to just see it.
+	
+	React is great if you don't already have a way of thinking about HTML/javascript. 
+
+		Don't have to make things by hand! (using jquery) (teaches you how to think about your data)
+
+WHY I LIKE IT:
+	React lets you think about things both logically and visually at the same time (which I love!)
+
+WHAT IT IS:
+	React is a framework for the browser that helps you design how you're going to make your "DOM manipulations".. which are usually "expensive", but React calculates how to make the minimum changes
+so it's less expensive to do this. <<<<< DOM DIFS >>>>>
+
+	React has things called COMPONENTS, which I guess are like HTML divs, but also like objects.
+- Components hold other components, and the mushy stuff on the inside of components is basically raw-ish HTML.
+- components are a set of function, the most important is render
+
+So the main things I have learned about react is:
+	Data flows DOWN!
+	Events bubble UP!
+
+Components have two types of information:
+
+	this.state - your "database"
+		- should be held in your high-up object
+		- state can flow down into the lower objects, I have usually done this
+			by passing in state to the child objects 
+		- this should some up the state of the program... 
+
+	this.props - "properties"
+	 	- inherited / set by parents
+	 	- doesn't change (I think?), or at least doesn't often change
+
+
+
+
+

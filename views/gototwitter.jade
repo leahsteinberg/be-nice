@@ -1,0 +1,55 @@
+html.
+  <head>
+  <link href="bootstrap/css/bootstrap.css" rel="stylesheet" >
+  <link href="Flat-UI-master/css/flat-ui.css" rel="stylesheet">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="http://fb.me/react-0.10.0.js"></script>
+  <script src="http://fb.me/JSXTransformer-0.10.0.js"></script>
+
+  </head>
+  <body>
+  <div class="container">
+  <div id="app"></div>
+  <script type="text/jsx">
+    /** @jsx React.DOM */
+    var Login = React.createClass({
+      click: function(ev) {
+        $.ajax({
+            type: "GET",
+            url: '/auth/twitter',
+            dataType: 'json'
+            }).done(function(data) {
+                window.location = data;
+            });
+      },
+      render: function(){
+                var buttonString ="btn btn-block btn-lg btn-primary";
+        return <div>
+                  <br/> <br/> <br/>
+                    <input class="submit"
+                           type="submit"
+                           onClick={this.click}
+                           value="Click Here To Sign In To Twitter"
+                           className={buttonString}>
+                    </input>
+               </div>;
+      }
+    });
+
+    var App = React.createClass({
+      render: function() {
+        return (<div>
+                <Login></Login>
+               </div>);
+        }
+    
+    });
+    var mountNode = document.getElementById("app");
+
+    React.renderComponent(<App></App>, mountNode);
+
+
+  </script>
+  </div>
+  </body>
+  </html>
