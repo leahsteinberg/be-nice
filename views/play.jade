@@ -4,51 +4,37 @@ html.
 	<script src="http://fb.me/react-0.10.0.js"></script>
 	<script src="http://fb.me/JSXTransformer-0.10.0.js"></script>
 	<script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<div id="date"></div>
 	<script type="text/jsx">
 		/** @jsx React.DOM */
-				
+		var socket = io.connect();
+		
 		var ChatModule = React.createClass({
 			getInitialState: function(){
 				return {up_messages: [], down_messages:[], current_message: '', direction_flag: true};
 			},
 			loadCommentsFromServer: function(){
-				console.log("trying to get stuff from server");
-				$.ajax({
-					type: "GET",
-					url: this.props.url,
-					dataType: 'json',
-					success: function(data){
-						this.setState({up_messages: data['up_messages'], down_messages: data['down_messages']});
-						console.log("data is:", data);
-						console.log("this state is", this.state);
-					}.bind(this),
-					error: function(xhr, status, err){
-						console.error(this.props.url, status, err.toString());
-					}.bind(this),
+				var that = this;
+				socket.on('message', function(data){
+				that.setState({up_messages: data['up_messages'], down_messages: data['down_messages']});
 				});
+
 			},
 			componentWillMount: function(){
 				this.loadCommentsFromServer();
-				setInterval(this.loadCommentsFromServer, this.props.pollInterval);
 			},
 			onTyping: function(e){
+				console.log("hii");
 				this.setState({current_message: e.target.value});
 			},
 			handleSubmit: function(e){
+				e.preventDefault();
 				var that = this;
 				var new_message = e.target.value;
-				$.ajax({
-					url: '/addchat',
-					dataType: 'json',
-					type: 'GET',
-					data: {'text': this.state.current_message,
-					'direction_flag': !this.state.direction_flag},
-					success: function(data){
-						console.log("successfully sent add chat");
-						this.setState({up_messages: data['up_messages'], down_messages: data['down_messages']});
-						}.bind(this)
-				});	
-				e.preventDefault();
+
+				socket.emit('client_data', {'message': this.state.current_message});	
+
 				this.setState({current_message: '', direction_flag: !this.state.direction_flag});
 			},
 			render: function(){
